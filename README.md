@@ -1,5 +1,7 @@
 # cinnamon-spices-desklets
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b9207c65d9dd46548a8e7a3e06fa5091)](https://app.codacy.com/manual/OnlineLearningTutorials/cinnamon-spices-desklets?utm_source=github.com&utm_medium=referral&utm_content=OnlineLearningTutorials/cinnamon-spices-desklets&utm_campaign=Badge_Grade_Settings)
+
 This repository hosts all the desklets available for the Cinnamon desktop environment.
 
 Users can install spices from https://cinnamon-spices.linuxmint.com, or directly from within Cinnamon -> System Settings.
