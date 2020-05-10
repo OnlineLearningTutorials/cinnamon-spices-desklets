@@ -44,12 +44,12 @@ MyDesklet.prototype = {
 	},
 
 	setupUI: function() {
-		this._covidContainer = new St.BoxLayout({vertical: true, style_class: 'covidContainer'});
-		this._title = new St.Label({text: this.langdl=="hi"? "कोरोना रिपोर्ट" : "Corona Report", style_class: "title_css"});
-		this._india = new St.Label({text: this.langdl=="hi" ? "भारत: loading" : "India: loading", style_class: "india_css"});
-		this._indiaDetails = new St.Label({text: this.langdl=="hi" ? "loading \n loading" : "loading \n loading", style_class: "indiadetails_css"});
-		this._state = new St.Label({text: this.langdl=="hi" ? "राज्य: loading" : "State loading", style_class: "state_css"});
-		this._stateDetails = new St.Label({text: this.langdl=="hi" ? "loading \n loading" : "loading \n loading", style_class: "statedetails_css"});
+		this._covidContainer = new St.BoxLayout({vertical: true, styleClass: "covidContainer"});
+		this._title = new St.Label({text: this.langdl==="hi"? "कोरोना रिपोर्ट" : "Corona Report", styleClass: "title_css"});
+		this._india = new St.Label({text: this.langdl==="hi" ? "भारत: loading" : "India: loading", styleClass: "india_css"});
+		this._indiaDetails = new St.Label({text: this.langdl==="hi" ? "loading \n loading" : "loading \n loading", styleClass: "indiadetails_css"});
+		this._state = new St.Label({text: this.langdl==="hi" ? "राज्य: loading" : "State loading", styleClass: "state_css"});
+		this._stateDetails = new St.Label({text: this.langdl==="hi" ? "loading \n loading" : "loading \n loading", styleClass: "statedetails_css"});
 		this._covidContainer.add(this._title);
 		this._covidContainer.add(this._india);
 		this._covidContainer.add(this._indiaDetails);
@@ -63,7 +63,7 @@ MyDesklet.prototype = {
 		this._districtContainer.add(this._districtZone);
 		this._districtContainer.add(this._districtDetails);
 
-		if(this.district_enable == true) {
+		if(this.district_enable === true) {
 			this._covidContainer.add(this._districtContainer);
 		}
 		this.setContent(this._covidContainer);
@@ -85,18 +85,18 @@ MyDesklet.prototype = {
 
 	refreshStats: function() {
 		let jsonData = this.getJSON("https://api.covid19india.org/data.json");
-		if(jsonData !== "" && this.langdl=="hi") {
+		if(jsonData !== "" && this.langdl==="hi") {
 			this._india.set_text("भारत: " +jsonData.statewise[0].active);
 			this._indiaDetails.set_text("पुष्टीकृत: " + jsonData.statewise[0].confirmed + ", रोगमुक्त: "+ jsonData.statewise[0].recovered+", मृतक: "+jsonData.statewise[0].deaths+" \nसमय "+ jsonData.statewise[0].lastupdatedtime+" पर");
-			for(var si in jsonData.statewise) { if(jsonData.statewise[si].statecode==this.mystate) break; }
-			this._state.set_text(jsonData.statewise[si].state + ": " +jsonData.statewise[si].active);
-			this._stateDetails.set_text("पुष्टीकृत: " + jsonData.statewise[si].confirmed + ", रोगमुक्त: "+ jsonData.statewise[si].recovered+", मृतक: "+jsonData.statewise[si].deaths+" \nसमय "+ jsonData.statewise[si].lastupdatedtime+" पर");
-		} else if(jsonData !== "" && this.langdl=="en") {
+			for(this.si in jsonData.statewise) { if(jsonData.statewise[this.si].statecode==this.mystate) break; }
+			this._state.set_text(jsonData.statewise[this.si].state + ": " +jsonData.statewise[this.si].active);
+			this._stateDetails.set_text("पुष्टीकृत: " + jsonData.statewise[this.si].confirmed + ", रोगमुक्त: "+ jsonData.statewise[this.si].recovered+", मृतक: "+jsonData.statewise[this.si].deaths+" \nसमय "+ jsonData.statewise[this.si].lastupdatedtime+" पर");
+		} else if(jsonData !== "" && this.langdl==="en") {
 			this._india.set_text("India: "+jsonData.statewise[0].active);
 			this._indiaDetails.set_text("Confirmed: " + jsonData.statewise[0].confirmed + ", Recovered: "+ jsonData.statewise[0].recovered+", Death: "+jsonData.statewise[0].deaths+" \nat "+ jsonData.statewise[0].lastupdatedtime);
-			for(var si in jsonData.statewise) { if(jsonData.statewise[si].statecode==this.mystate) break; }
-			this._state.set_text(jsonData.statewise[si].state + ": " +jsonData.statewise[si].active);
-			this._stateDetails.set_text("Confirmed: " + jsonData.statewise[si].confirmed + ", Recovered: "+ jsonData.statewise[si].recovered+", Death: "+jsonData.statewise[si].deaths+" \nat "+ jsonData.statewise[si].lastupdatedtime);
+			for(this.si in jsonData.statewise) { if(jsonData.statewise[this.si].statecode==this.mystate) break; }
+			this._state.set_text(jsonData.statewise[this.si].state + ": " +jsonData.statewise[this.si].active);
+			this._stateDetails.set_text("Confirmed: " + jsonData.statewise[this.si].confirmed + ", Recovered: "+ jsonData.statewise[this.si].recovered+", Death: "+jsonData.statewise[this.si].deaths+" \nat "+ jsonData.statewise[this.si].lastupdatedtime);
 		} else {
 			this._indiaDetails.set_text("unreachable"+" \nunreachable");
 			
@@ -109,37 +109,35 @@ MyDesklet.prototype = {
 			if(jsonZone!=="") {
 				var zi = "Not found in state"
 				for(var zn in jsonZone.zones) { 
-					if(jsonZone.zones[zn].statecode == this.mystate && jsonZone.zones[zn].district.toLowerCase() == this.mydistrict.toLowerCase()) {
+					if(jsonZone.zones[zn].statecode === this.mystate && jsonZone.zones[zn].district.toLowerCase() === this.mydistrict.toLowerCase()) {
 						zi = zn; break;
 					}
 				}
 				if(zi !== "Not found in state") {
 					let zoneColor = jsonZone.zones[zi].zone;
-					if(zoneColor == "Red") {
+					if(zoneColor === "Red") {
 						this._districtContainer.style_class = "districtred_css";
-						this._districtZone.set_text(this.langdl=="hi"?"लाल क्षेत्र "+jsonZone.zones[zi].lastupdated+" से":"Red Zone from "+jsonZone.zones[zi].lastupdated);
-					}if(zoneColor == "Green") {
+						this._districtZone.set_text(this.langdl==="hi"?"लाल क्षेत्र "+jsonZone.zones[zi].lastupdated+" से":"Red Zone from "+jsonZone.zones[zi].lastupdated);
+					}if(zoneColor === "Green") {
 						this._districtContainer.style_class = "districtgreen_css";
-						this._districtZone.set_text(this.langdl=="hi"?"हरा क्षेत्र "+jsonZone.zones[zi].lastupdated+" से":"Green Zone from "+jsonZone.zones[zi].lastupdated);
-					}if(zoneColor == "Orange") {
+						this._districtZone.set_text(this.langdl==="hi"?"हरा क्षेत्र "+jsonZone.zones[zi].lastupdated+" से":"Green Zone from "+jsonZone.zones[zi].lastupdated);
+					}if(zoneColor === "Orange") {
 						this._districtContainer.style_class = "districtorange_css";
-						this._districtZone.set_text(this.langdl=="hi"?"नारंगी क्षेत्र "+jsonZone.zones[zi].lastupdated+" से":"Orange Zone from "+jsonZone.zones[zi].lastupdated);
+						this._districtZone.set_text(this.langdl==="hi"?"नारंगी क्षेत्र "+jsonZone.zones[zi].lastupdated+" से":"Orange Zone from "+jsonZone.zones[zi].lastupdated);
 					}
 				} else {
 					this._districtZone.set_text("Zone not found");
 				}
-			} else { this._districtZone.set_text(this.langdl=="hi"?"अज्ञात":"Unreachable"); }
+			} else { this._districtZone.set_text(this.langdl==="hi"?"अज्ञात":"Unreachable"); }
 			let jsonDistrict = this.getJSON("https://api.covid19india.org/v2/state_district_wise.json");
 			if(jsonDistrict!=="") {
 				var districtfound = false;
 				for(var sn in jsonDistrict) {
 					if(jsonDistrict[sn].statecode == this.mystate) {
 						for(var dn in jsonDistrict[sn].districtData) {
-							global.log(jsonDistrict[sn].districtData[dn].district );
-							global.log(jsonDistrict[sn].districtData[dn].district.toLowerCase() == this.mydistrict.toLowerCase());
-							if(jsonDistrict[sn].districtData[dn].district.toLowerCase() == this.mydistrict.toLowerCase()) {
+							if(jsonDistrict[sn].districtData[dn].district.toLowerCase() === this.mydistrict.toLowerCase()) {
 								global.log("found");
-								this._districtDetails.set_text(this.langdl == "hi" ? 
+								this._districtDetails.set_text(this.langdl === "hi" ? 
 									"सक्रिय: "+jsonDistrict[sn].districtData[dn].active
 									+" \nपुष्टीकृत: "+jsonDistrict[sn].districtData[dn].confirmed
 									+"\nरोगमुक्त: "+jsonDistrict[sn].districtData[dn].recovered
@@ -157,8 +155,8 @@ MyDesklet.prototype = {
 					}
 				}
 				
-				if(districtfound==false) {
-					this._districtDetails.set_text(this.langdl == "hi" ? 
+				if(districtfound===false) {
+					this._districtDetails.set_text(this.langdl === "hi" ? 
 									"सक्रिय: "+"अज्ञात"
 									+" \nपुष्टीकृत: "+"अज्ञात"
 									+"\nरोगमुक्त: "+"अज्ञात"
@@ -168,7 +166,7 @@ MyDesklet.prototype = {
 									+" \nConfirmed: "+"Unknown"
 									+"\nRecovered: "+"Unknown"
 									+"\nDeceased: "+"Unknown");
-					this._district.set_text(this.langdl=="hi"?this.mydistrict+": राज्य में नहीं" : this.mydistrict+": Not found in state");
+					this._district.set_text(this.langdl==="hi"?this.mydistrict+": राज्य में नहीं" : this.mydistrict+": Not found in state");
 				} 
 
 			}
@@ -177,33 +175,8 @@ MyDesklet.prototype = {
 									+" \n"+"Unreachable"
 									+"\n"+"Unreachable"
 									+"\n"+"Unreachable");
-			this._district.set_text(this.langdl=="hi"?this.mydistrict+": इंटरनेट नहीं है": this.mydistrict+": No Internet");
+			this._district.set_text(this.langdl==="hi"?this.mydistrict+": इंटरनेट नहीं है": this.mydistrict+": No Internet");
 			}
-		/*
-		if(this.district_enable == true) {
-			let jsonDistrict = JSON.parse(this.getJSON("https://api.covid19india.org/v2/state_district_wise.json"));
-			var si, di, districtDetails = "No Internet";
-			if(jsonDistrict!=="" && this.langdl=="hi") {
-				for(si=0; si<jsonDistrict.length-1; si++) {
-					for(di=0; di<jsonDistrict[si].districtData.length-1; di++) {
-						if(this.mydistrict.toLowerCase() == jsonDistrict[si].districtData[di].district.toLowerCase()) districtDetails = "सक्रिय: "+jsonDistrict[si].districtData[di].active+" \nपुष्टीकृत: "+jsonDistrict[si].districtData[di].confirmed+"\nरोगमुक्त: "+jsonDistrict[si].districtData[di].recovered+"\nमृतक: "+jsonDistrict[si].districtData[di].deceased++jsonDistrict[si];
-					}
-				}
-				this._districtDetails.set_text(districtDetails);
-			} else if(jsonDistrict!=="" && this.langdl=="en") {
-				for(si=0; si<jsonDistrict.length-1; si++) {
-					for(di=0; di<jsonDistrict[si].districtData.length-1; di++) {
-						if(this.mydistrict.toLowerCase() == jsonDistrict[si].districtData[di].district.toLowerCase()) districtDetails = "Active"+jsonDistrict[si].districtData[di].active+" \nConfirmed: "+jsonDistrict[si].districtData[di].confirmed+"\nRecovered"+jsonDistrict[si].districtData[di].recovered+"\nDeceased"+jsonDistrict[si].districtData[di].deceased;
-					}
-				}
-				this._districtDetails.set_text(districtDetails);
-			} else {
-				this._districtDetails.set_text(districtDetails);
-			}
-
-		}*/
-
-		
 	},
 
 
