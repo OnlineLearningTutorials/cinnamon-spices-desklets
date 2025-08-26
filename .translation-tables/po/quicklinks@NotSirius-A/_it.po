@@ -1,0 +1,20 @@
+# QUICK LINKS
+# This file is put in the public domain.
+# NotSirius-A, 2025
+#
+msgid ""
+msgstr ""
+
+#. settings-schema.json->links-bottom-label->description
+msgid ""
+"Some tips:\n"
+"You can open folders using ex. `nemo <path>` command.\n"
+"If you need to see the output of a command, set the last attribute to true.\n"
+"You can break your links' names into multiple lines by typing \\n where you "
+"want a break.\n"
+"Set `Shell` to enabled if your command only outputs to the console ex. `ls` "
+"or `htop`.\n"
+"If you want multiple link categories/panels just create new instances of "
+"this desklet\n"
+" (click the `+` sign in system desklet manager)."
+msgstr ""
